@@ -15,12 +15,16 @@ class DataLoader(object):
 
     def get_next_episode(self):
         n_examples = 20
-        support = np.zeros([self.n_way, self.n_support, 28, 28, 1], dtype=np.float32)
-        query = np.zeros([self.n_way, self.n_query, 28, 28, 1], dtype=np.float32)
+        support = np.zeros([self.n_way, self.n_support,
+                           28, 28, 1], dtype=np.float32)
+        query = np.zeros(
+            [self.n_way, self.n_query, 28, 28, 1], dtype=np.float32)
         classes_ep = np.random.permutation(self.n_classes)[:self.n_way]
 
+        print('shape of data', np.array(self.data).shape)
         for i, i_class in enumerate(classes_ep):
-            selected = np.random.permutation(n_examples)[:self.n_support + self.n_query]
+            selected = np.random.permutation(
+                n_examples)[:self.n_support + self.n_query]
             support[i] = self.data[i_class, selected[:self.n_support]]
             query[i] = self.data[i_class, selected[self.n_support:]]
 
@@ -178,8 +182,8 @@ def load_omniglot(data_dir, config, splits):
         data = np.zeros([len(classes), len(img_paths[0]), 28, 28, 1])
         for i_class in range(len(classes)):
             for i_img in range(len(img_paths[i_class])):
-                data[i_class, i_img, :, :,:] = load_and_preprocess_image(
-                            img_paths[i_class][i_img], rotates[i_class])
+                data[i_class, i_img, :, :, :] = load_and_preprocess_image(
+                    img_paths[i_class][i_img], rotates[i_class])
 
         data_loader = DataLoader(data,
                                  n_classes=len(classes),

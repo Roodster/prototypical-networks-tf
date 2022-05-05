@@ -7,10 +7,10 @@ from train_setup import train
 def preprocess_config(c):
     conf_dict = {}
     int_params = ['data.train_way', 'data.test_way', 'data.train_support',
-                      'data.test_support', 'data.train_query', 'data.test_query',
-                      'data.query', 'data.support', 'data.way', 'data.episodes',
-                      'data.gpu', 'data.cuda', 'model.z_dim', 'train.epochs',
-                      'train.patience']
+                  'data.test_support', 'data.train_query', 'data.test_query',
+                  'data.query', 'data.support', 'data.way', 'data.episodes',
+                  'data.gpu', 'data.cuda', 'model.z_dim', 'train.epochs',
+                  'train.patience']
     float_params = ['train.lr']
     for param in c:
         if param in int_params:
@@ -23,7 +23,7 @@ def preprocess_config(c):
 
 
 parser = argparse.ArgumentParser(description='Run training')
-parser.add_argument("--config", type=str, default="./scripts/config_omniglot.conf",
+parser.add_argument("--config", type=str, default="./scripts/config_esc50.conf",
                     help="Path to the config file.")
 
 # Run training

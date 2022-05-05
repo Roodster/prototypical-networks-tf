@@ -3,7 +3,7 @@ import unittest
 
 from scripts import train
 
-cuda_on = 1
+CUDA_ENABLED = 0
 
 class TestsOmniglot(unittest.TestCase):
 
@@ -18,7 +18,7 @@ class TestsOmniglot(unittest.TestCase):
             "data.test_support": 1,
             "data.test_query": 1,
             "data.episodes": 10,
-            "data.cuda": cuda_on,
+            "data.cuda": CUDA_ENABLED,
             "data.gpu": 0,
             "model.x_dim": "28,28,1",
             "model.z_dim": 64,
@@ -42,7 +42,7 @@ class TestsOmniglot(unittest.TestCase):
             "data.test_support": 5,
             "data.test_query": 5,
             "data.episodes": 10,
-            "data.cuda": cuda_on,
+            "data.cuda": CUDA_ENABLED,
             "data.gpu": 0,
             "model.x_dim": "28,28,1",
             "model.z_dim": 64,
@@ -66,7 +66,7 @@ class TestsOmniglot(unittest.TestCase):
             "data.test_support": 10,
             "data.test_query": 10,
             "data.episodes": 10,
-            "data.cuda": cuda_on,
+            "data.cuda": CUDA_ENABLED,
             "data.gpu": 0,
             "model.x_dim": "28,28,1",
             "model.z_dim": 64,
@@ -90,7 +90,7 @@ class TestsOmniglot(unittest.TestCase):
             "data.test_support": 1,
             "data.test_query": 1,
             "data.episodes": 10,
-            "data.cuda": cuda_on,
+            "data.cuda": CUDA_ENABLED,
             "data.gpu": 0,
             "model.x_dim": "28,28,1",
             "model.z_dim": 64,
@@ -103,3 +103,5 @@ class TestsOmniglot(unittest.TestCase):
         train(config)
         os.remove('test_omniglot.h5')
 
+if __name__ == "__main__":
+    unittest.main()
