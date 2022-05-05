@@ -18,7 +18,8 @@ def train(config):
     tf.random.set_seed(2019)
 
     # Create folder for model
-    model_dir = config['model.save_path'][:config['model.save_path'].rfind('/')]
+    model_dir = config['model.save_path'][:config['model.save_path'].rfind(
+        '/')]
     if not os.path.exists(model_dir):
         os.makedirs(model_dir)
 
@@ -144,6 +145,6 @@ def train(config):
     time_end = time.time()
 
     elapsed = time_end - time_start
-    h, min = elapsed//3600, elapsed%3600//60
+    h, min = elapsed//3600, elapsed % 3600//60
     sec = elapsed-min*60
     print(f"Training took: {h} h {min} min {sec} sec")

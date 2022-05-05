@@ -14,8 +14,6 @@ def load(data_dir, config, splits):
     as tensorflow Dataset objects.
     """
 
-    print(f"dataset: |{config['data.dataset']}|")
-
     if config['data.dataset'] == "omniglot":
         ds = load_omniglot(data_dir, config, splits)
     elif config['data.dataset'] == "mini-imagenet":
