@@ -13,6 +13,9 @@ def load(data_dir, config, splits):
     Returns (dict): dictionary with keys 'train'|'val'|'test'| and values
     as tensorflow Dataset objects.
     """
+
+    print(f"dataset: |{config['data.dataset']}|")
+
     if config['data.dataset'] == "omniglot":
         ds = load_omniglot(data_dir, config, splits)
     elif config['data.dataset'] == "mini-imagenet":
@@ -20,5 +23,5 @@ def load(data_dir, config, splits):
     elif config['data.dataset'] == 'esc50':
         ds = load_esc_50(data_dir, config, splits)
     else:
-        raise ValueError(f"Unknow dataset: {config['data.dataset']}")
+        raise ValueError(f"Unknown dataset: {config['data.dataset']}")
     return ds
