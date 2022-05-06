@@ -19,7 +19,7 @@ class TestsESC50(unittest.TestCase):
             "data.episodes": 10,
             "data.cuda": False,
             "data.gpu": 0,
-            "model.x_dim": "128,47,1",
+            "model.x_dim": "128,48,1",
             "model.z_dim": 64,
             "train.epochs": 1,
             'train.optim_method': "Adam",
@@ -43,16 +43,16 @@ class TestsESC50(unittest.TestCase):
             "data.episodes": 10,
             "data.cuda": False,
             "data.gpu": 0,
-            "model.x_dim": "128,47,1",
+            "model.x_dim": "128,48,1",
             "model.z_dim": 64,
-            "train.epochs": 10,
+            "train.epochs": 3,
             'train.optim_method': "Adam",
-            "train.lr": 0.001,
+            "train.lr": 0.01,
             "train.patience": 5,
-            "model.save_path": 'test_mi_net.h5'
+            "model.save_path": 'test_esc50_2way5shot.h5'
         }
         train(config)
-        os.remove('test_mi_net.h5')
+        os.remove('test_esc50_2way5shot.h5')
 
     def test_5_shot_5_way(self):
         config = {
@@ -67,7 +67,7 @@ class TestsESC50(unittest.TestCase):
             "data.episodes": 3,
             "data.cuda": False,
             "data.gpu": 0,
-            "model.x_dim": "128,47,1",
+            "model.x_dim": "128,48,1",
             "model.z_dim": 64,
             "train.epochs": 1,
             'train.optim_method': "Adam",
@@ -91,16 +91,16 @@ class TestsESC50(unittest.TestCase):
             "data.episodes": 3,
             "data.cuda": False,
             "data.gpu": 0,
-            "model.x_dim": "128,47,1",
+            "model.x_dim": "128,48,1",
             "model.z_dim": 64,
             "train.epochs": 1,
             'train.optim_method': "Adam",
             "train.lr": 0.001,
             "train.patience": 5,
-            "model.save_path": 'test_mi_net.h5'
+            "model.save_path": 'test_esc50_1way10shot.h5'
         }
         train(config)
-        os.remove('test_mi_net.h5')
+        os.remove('test_esc50_1way10shot.h5')
 
 
 if __name__ == "__main__":

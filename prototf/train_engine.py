@@ -6,6 +6,7 @@ class TrainEngine(object):
     Engine that launches training per epochs and episodes.
     Contains hooks to perform certain actions when necessary.
     """
+
     def __init__(self):
         self.hooks = {name: lambda state: None
                       for name in ['on_start',

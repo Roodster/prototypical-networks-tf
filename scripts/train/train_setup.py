@@ -2,15 +2,17 @@
 Logic for model creation, training launching and actions needed to be
 accomplished during training (metrics monitor, model saving etc.)
 """
-
+import matplotlib.pyplot as plt
 import os
 import time
 import numpy as np
 import tensorflow as tf
+import librosa
+import librosa.display
 
-from prototf.models import Prototypical
-from prototf.data import load
 from prototf import TrainEngine
+from prototf.data import load
+from prototf.models import Prototypical
 
 
 def train(config):

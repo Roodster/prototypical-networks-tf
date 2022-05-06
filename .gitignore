@@ -1,4 +1,5 @@
 build/
 dist/
 prototf.egg-info/
-data/
+data/esc50
+data/omniglot

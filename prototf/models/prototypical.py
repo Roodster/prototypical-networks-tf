@@ -27,6 +27,7 @@ class Prototypical(Model):
     """
     Implemenation of Prototypical Network.
     """
+
     def __init__(self, n_support, n_query, w, h, c):
         """
         Args:
@@ -94,10 +95,12 @@ class Prototypical(Model):
         # log softmax of calculated distances
         log_p_y = tf.nn.log_softmax(-dists, axis=-1)
         log_p_y = tf.reshape(log_p_y, [n_class, n_query, -1])
-        
-        loss = -tf.reduce_mean(tf.reshape(tf.reduce_sum(tf.multiply(y_onehot, log_p_y), axis=-1), [-1]))
+
+        loss = - \
+            tf.reduce_mean(tf.reshape(tf.reduce_sum(
+                tf.multiply(y_onehot, log_p_y), axis=-1), [-1]))
         eq = tf.cast(tf.equal(
-            tf.cast(tf.argmax(log_p_y, axis=-1), tf.int32), 
+            tf.cast(tf.argmax(log_p_y, axis=-1), tf.int32),
             tf.cast(y, tf.int32)), tf.float32)
         acc = tf.reduce_mean(eq)
         return loss, acc

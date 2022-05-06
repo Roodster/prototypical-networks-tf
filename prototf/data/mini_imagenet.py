@@ -5,6 +5,7 @@ from PIL import Image
 from functools import partial
 import tensorflow as tf
 
+
 class DataLoader(object):
     def __init__(self, data, n_classes, n_way, n_support, n_query):
         self.data = data
@@ -15,12 +16,15 @@ class DataLoader(object):
 
     def get_next_episode(self):
         n_examples = self.data.shape[1]
-        support = np.zeros([self.n_way, self.n_support, 84, 84, 3], dtype=np.float32)
-        query = np.zeros([self.n_way, self.n_query, 84, 84, 3], dtype=np.float32)
+        support = np.zeros([self.n_way, self.n_support,
+                           84, 84, 3], dtype=np.float32)
+        query = np.zeros(
+            [self.n_way, self.n_query, 84, 84, 3], dtype=np.float32)
         classes_ep = np.random.permutation(self.n_classes)[:self.n_way]
 
         for i, i_class in enumerate(classes_ep):
-            selected = np.random.permutation(n_examples)[:self.n_support + self.n_query]
+            selected = np.random.permutation(
+                n_examples)[:self.n_support + self.n_query]
             support[i] = self.data[i_class, selected[:self.n_support]]
             query[i] = self.data[i_class, selected[self.n_support:]]
 
@@ -39,7 +43,7 @@ def load_class_images(n_support, n_query, img_paths):
         img_inds (list): indices of the images belonging to the class
 
     Returns (tf.data.Dataset, tf.data.Dataset): support and query datasets
-    
+
     """
     n_examples = img_paths.shape[0]
     example_inds = tf.range(n_examples)
@@ -68,6 +72,7 @@ def load_class_images(n_support, n_query, img_paths):
         query_imgs = tf.concat(query_imgs_proc, axis=0)
 
     return support_imgs, query_imgs
+
 
 def load_mini_imagenet(data_dir, config, splits):
     """
@@ -107,10 +112,11 @@ def load_mini_imagenet(data_dir, config, splits):
         # load dict with 'class_dict' and 'image_data' keys
         with open(ds_filename, 'rb') as f:
             data_dict = pickle.load(f)
-        
+
         # Convert original data to format [n_classes, n_img, w, h, c]
         first_key = list(data_dict['class_dict'])[0]
-        data = np.zeros((len(data_dict['class_dict']), len(data_dict['class_dict'][first_key]), 84, 84, 3))
+        data = np.zeros((len(data_dict['class_dict']), len(
+            data_dict['class_dict'][first_key]), 84, 84, 3))
         for i, (k, v) in enumerate(data_dict['class_dict'].items()):
             data[i, :, :, :, :] = data_dict['image_data'][v, :]
         data /= 255.
@@ -118,7 +124,8 @@ def load_mini_imagenet(data_dir, config, splits):
         data[:, :, :, 1] = (data[:, :, :, 1] - 0.456) / 0.224
         data[:, :, :, 2] = (data[:, :, :, 2] - 0.406) / 0.225
 
-        data_loader = DataLoader(data, data.shape[0], n_way, n_support, n_query)
+        data_loader = DataLoader(
+            data, data.shape[0], n_way, n_support, n_query)
         ret[split] = data_loader
 
     return ret
