@@ -5,9 +5,10 @@ from PIL import Image
 from functools import partial
 import tensorflow as tf
 import glob
+import sys
+import cv2
 import librosa.display
 import matplotlib.pyplot as plt
-import sys
 
 DIM1 = 128
 DIM2 = 48
@@ -16,6 +17,7 @@ DIM3 = 1
 
 class DataLoader(object):
     def __init__(self, data, n_classes, n_way, n_support, n_query):
+
         self.data = data
         self.n_way = n_way
         self.n_classes = n_classes
@@ -23,7 +25,7 @@ class DataLoader(object):
         self.n_query = n_query
 
     def get_next_episode(self):
-        n_examples = 20
+        n_examples = 200
         support = np.zeros([self.n_way, self.n_support,
                            DIM1, DIM2, DIM3], dtype=np.float32)
         query = np.zeros(
@@ -83,6 +85,11 @@ def load_and_preprocess_spectrogram(img_path):
     img = np.load(img_path)
     img = np.asarray(img)
     img = 1 - img
+
+    # librosa.display.specshow(np.expand_dims(img, -1))
+    # plt.show()
+    # print('hjeh')
+
     return np.expand_dims(img, -1)
 
 
