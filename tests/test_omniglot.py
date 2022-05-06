@@ -5,6 +5,7 @@ from scripts import train
 
 CUDA_ENABLED = 0
 
+
 class TestsOmniglot(unittest.TestCase):
 
     def test_1_shot_1_way(self):
@@ -26,10 +27,10 @@ class TestsOmniglot(unittest.TestCase):
             'train.optim_method': "Adam",
             "train.lr": 0.001,
             "train.patience": 5,
-            "model.save_path": 'test_omniglot.h5'
+            "model.save_path": './test_omniglot.h5'
         }
         train(config)
-        os.remove('test_omniglot.h5')
+        os.remove('./test_omniglot.h5')
 
     def test_5_shot_5_way(self):
         config = {
@@ -50,7 +51,7 @@ class TestsOmniglot(unittest.TestCase):
             'train.optim_method': "Adam",
             "train.lr": 0.001,
             "train.patience": 5,
-            "model.save_path": 'test_omniglot.h5'
+            "model.save_path": './test_omniglot.h5'
         }
         train(config)
         os.remove('test_omniglot.h5')
@@ -74,7 +75,7 @@ class TestsOmniglot(unittest.TestCase):
             'train.optim_method': "Adam",
             "train.lr": 0.001,
             "train.patience": 5,
-            "model.save_path": 'test_omniglot.h5'
+            "model.save_path": './test_omniglot.h5'
         }
         train(config)
         os.remove('test_omniglot.h5')
@@ -98,10 +99,11 @@ class TestsOmniglot(unittest.TestCase):
             'train.optim_method': "Adam",
             "train.lr": 0.001,
             "train.patience": 5,
-            "model.save_path": 'test_omniglot.h5'
+            "model.save_path": './test_omniglot.h5'
         }
         train(config)
         os.remove('test_omniglot.h5')
+
 
 if __name__ == "__main__":
     unittest.main()

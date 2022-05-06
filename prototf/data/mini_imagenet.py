@@ -31,17 +31,28 @@ class DataLoader(object):
         return support, query
 
 
+def load_and_preprocess_image(img_path, rot):
+    """
+    Load and return preprocessed image.
+    Args:
+        img_path (str): path to the image on disk.
+    Returns (Tensor): preprocessed image
+    """
+    img = Image.open(img_path).resize((84, 84)).rotate(rot)
+    img = np.asarray(img)
+    img = 1 - img
+    return np.expand_dims(img, -1)
+
+
 def load_class_images(n_support, n_query, img_paths):
     """
     Load support and query datasets with processed images.
-
     Args:
         images (np.ndarray): numpy array of images
         n_support (int): number of support samples
         n_query (int): number of query samples
         class_names (str): name of the class
         img_inds (list): indices of the images belonging to the class
-
     Returns (tf.data.Dataset, tf.data.Dataset): support and query datasets
 
     """
@@ -77,14 +88,11 @@ def load_class_images(n_support, n_query, img_paths):
 def load_mini_imagenet(data_dir, config, splits):
     """
     Load miniImagenet dataset.
-
     Args:
         data_dir (str): path of the directory with 'splits', 'data' subdirs.
         config (dict): general dict with program settings.
         splits (list): list of strings 'train'|'val'|'test'
-
     Returns (dict): dictionary with keys as splits and values as tf.Dataset
-
     """
     ret = {}
     for split in splits:

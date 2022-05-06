@@ -19,16 +19,16 @@ class TestsESC50(unittest.TestCase):
     #         "data.episodes": 50,
     #         "data.cuda": False,
     #         "data.gpu": 0,
-    #         "model.x_dim": "128,48,1",
+    #         "model.x_dim": "32,128,1",
     #         "model.z_dim": 64,
     #         "train.epochs": 20,
     #         'train.optim_method': "Adam",
     #         "train.lr": 0.001,
     #         "train.patience": 5,
-    #         "model.save_path": 'test_esc50_1way1shot.h5'
+    #         "model.save_path": './test_esc50_1way1shot.h5'
     #     }
     #     train(config)
-    #     os.remove('test_esc50_1way1shot.h5')
+    #     os.remove('./test_esc50_1way1shot.h5')
 
     def test_5_shot_2_way(self):
         config = {
@@ -43,16 +43,16 @@ class TestsESC50(unittest.TestCase):
             "data.episodes": 30,
             "data.cuda": False,
             "data.gpu": 0,
-            "model.x_dim": "128,48,1",
+            "model.x_dim": "32,128,1",
             "model.z_dim": 64,
             "train.epochs": 100,
             'train.optim_method': "Adam",
             "train.lr": 0.001,
             "train.patience": 5,
-            "model.save_path": 'test_esc50_2way5shot.h5'
+            "model.save_path": './test_esc50_2way5shot.h5'
         }
         train(config)
-        os.remove('test_esc50_2way5shot.h5')
+        os.remove('./test_esc50_2way5shot.h5')
 
     # def test_5_shot_5_way(self):
     #     config = {
@@ -67,16 +67,16 @@ class TestsESC50(unittest.TestCase):
     #         "data.episodes": 3,
     #         "data.cuda": False,
     #         "data.gpu": 0,
-    #         "model.x_dim": "128,48,1",
+    #         "model.x_dim": "32,128,1",
     #         "model.z_dim": 64,
     #         "train.epochs": 1,
     #         'train.optim_method': "Adam",
     #         "train.lr": 0.001,
     #         "train.patience": 5,
-    #         "model.save_path": 'test_esc50_5way5shot.h5'
+    #         "model.save_path": './test_esc50_5way5shot.h5'
     #     }
     #     train(config)
-    #     os.remove('test_esc50_5way5shot.h5')
+    #     os.remove('./test_esc50_5way5shot.h5')
 
     # def test_10_shot_1_way(self):
     #     config = {
@@ -91,16 +91,16 @@ class TestsESC50(unittest.TestCase):
     #         "data.episodes": 3,
     #         "data.cuda": False,
     #         "data.gpu": 0,
-    #         "model.x_dim": "128,48,1",
+    #         "model.x_dim": "32,128,1",
     #         "model.z_dim": 64,
     #         "train.epochs": 1,
     #         'train.optim_method': "Adam",
     #         "train.lr": 0.001,
     #         "train.patience": 5,
-    #         "model.save_path": 'test_esc50_1way10shot.h5'
+    #         "model.save_path": './test_esc50_1way10shot.h5'
     #     }
     #     train(config)
-    #     os.remove('test_esc50_1way10shot.h5')
+    #     os.remove('./test_esc50_1way10shot.h5')
 
 
 if __name__ == "__main__":

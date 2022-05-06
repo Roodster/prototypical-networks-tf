@@ -14,7 +14,7 @@ class DataLoader(object):
         self.n_query = n_query
 
     def get_next_episode(self):
-        n_examples = 20
+        n_examples = self.data.shape[1]
         support = np.zeros([self.n_way, self.n_support,
                            28, 28, 1], dtype=np.float32)
         query = np.zeros(

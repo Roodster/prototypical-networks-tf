@@ -16,8 +16,8 @@ from prototf.models import Prototypical
 
 
 def train(config):
-    np.random.seed(2019)
-    tf.random.set_seed(2019)
+    np.random.seed(2022)
+    tf.random.set_seed(2022)
 
     # Create folder for model
     model_dir = config['model.save_path'][:config['model.save_path'].rfind(
@@ -134,6 +134,7 @@ def train(config):
         loss_func = state['loss_func']
         for i_episode in range(config['data.episodes']):
             support, query = val_loader.get_next_episode()
+
         val_step(loss_func, support, query)
     train_engine.hooks['on_end_episode'] = on_end_episode
 

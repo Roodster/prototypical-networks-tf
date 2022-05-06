@@ -25,10 +25,10 @@ class TestsMiniImagenet(unittest.TestCase):
             'train.optim_method': "Adam",
             "train.lr": 0.001,
             "train.patience": 5,
-            "model.save_path": 'test_miniimagenet.h5'
+            "model.save_path": './test_miniimagenet.h5'
         }
         train(config)
-        os.remove('test_miniimagenet.h5')
+        os.remove('./test_miniimagenet.h5')
 
     def test_5_shot_5_way(self):
         config = {
@@ -49,10 +49,10 @@ class TestsMiniImagenet(unittest.TestCase):
             'train.optim_method': "Adam",
             "train.lr": 0.001,
             "train.patience": 5,
-            "model.save_path": 'test_mi_net.h5'
+            "model.save_path": './test_mi_net.h5'
         }
         train(config)
-        os.remove('test_mi_net.h5')
+        os.remove('./test_mi_net.h5')
 
     def test_10_shot_1_way(self):
         config = {
@@ -73,7 +73,7 @@ class TestsMiniImagenet(unittest.TestCase):
             'train.optim_method': "Adam",
             "train.lr": 0.001,
             "train.patience": 5,
-            "model.save_path": 'test_mi_net.h5'
+            "model.save_path": './test_mi_net.h5'
         }
         train(config)
-        os.remove('test_mi_net.h5')
+        os.remove('./test_mi_net.h5')

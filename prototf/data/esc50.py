@@ -10,8 +10,8 @@ import cv2
 import librosa.display
 import matplotlib.pyplot as plt
 
-DIM1 = 128
-DIM2 = 48
+DIM1 = 32
+DIM2 = 128
 DIM3 = 1
 
 
@@ -25,7 +25,7 @@ class DataLoader(object):
         self.n_query = n_query
 
     def get_next_episode(self):
-        n_examples = 200
+        n_examples = self.data.shape[1]
         support = np.zeros([self.n_way, self.n_support,
                            DIM1, DIM2, DIM3], dtype=np.float32)
         query = np.zeros(
@@ -46,9 +46,8 @@ def class_names_to_paths(data_dir, class_names):
     Return full paths to the directories containing classes of images.
     Args:
         data_dir (str): directory with dataset
-        class_names (list): names of the classes in format alphabet/name/rotate
-    Returns (list, list): list of paths to the classes,
-    list of stings of rotations codes
+        class_names (list): names of the classes
+    Returns (list): list of paths to the classes
     """
     d = []
     for class_name in class_names:
@@ -64,9 +63,7 @@ def get_class_images_paths(dir_paths):
     the path of the classes' directories.
     Args:
         dir_paths (list): list of the class directories
-        rotates (list): list of stings of rotation codes.
-    Returns (list, list, list): list of class names, list of lists of paths to
-    the images, list of rotation angles (0..240) as integers.
+    Returns (list): list of class names
     """
     classes = []
     for dir_path in dir_paths:
@@ -84,16 +81,11 @@ def load_and_preprocess_spectrogram(img_path):
     """
     img = np.load(img_path)
     img = np.asarray(img)
-    img = 1 - img
-
-    # librosa.display.specshow(np.expand_dims(img, -1))
-    # plt.show()
-    # print('hjeh')
-
+    # img = 1 - img
     return np.expand_dims(img, -1)
 
 
-def load_class_images(n_support, n_query, img_paths, rot):
+def load_class_images(n_support, n_query, img_paths):
     """
     Given paths to the images of class, build support and query tf.Datasets.
     Args:
@@ -105,13 +97,13 @@ def load_class_images(n_support, n_query, img_paths, rot):
     """
     # Shuffle indices of given images
     n_examples = img_paths.shape[0]
-    example_inds = tf.range(n_examples)
-    example_inds = tf.random.shuffle(example_inds)
+    example_indidices = tf.range(n_examples)
+    example_indidices = tf.random.shuffle(example_indidices)
 
     # Get indidces for support and query datasets
-    support_inds = example_inds[:n_support]
+    support_inds = example_indidices[:n_support]
     support_paths = tf.gather(img_paths, support_inds)
-    query_inds = example_inds[n_support:]
+    query_inds = example_indidices[n_support:]
     query_paths = tf.gather(img_paths, query_inds)
 
     # Build support dataset
