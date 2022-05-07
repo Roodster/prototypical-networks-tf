@@ -1,6 +1,13 @@
 import numpy as np
 
 
+import librosa.display
+import matplotlib.pyplot as plt
+
+
+from prototf.utils.visualizer import visualize
+
+
 class TrainEngine(object):
     """
     Engine that launches training per epochs and episodes.
@@ -36,6 +43,10 @@ class TrainEngine(object):
             self.hooks['on_start_epoch'](state)
             for i_episode in range(state['n_episodes']):
                 support, query = train_loader.get_next_episode()
+
+                # visualize(support, 'support')
+                # visualize(query, 'query')
+
                 state['sample'] = (support, query)
                 self.hooks['on_start_episode'](state)
                 if i_episode+1 == state['n_episodes']:

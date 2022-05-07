@@ -32,6 +32,30 @@ class TestsOmniglot(unittest.TestCase):
         train(config)
         os.remove('./test_omniglot.h5')
 
+    def test_5_shot_2_way(self):
+        config = {
+            "data.dataset": "omniglot",
+            "data.split": "vinyals",
+            "data.train_way": 2,
+            "data.train_support": 5,
+            "data.train_query": 5,
+            "data.test_way": 5,
+            "data.test_support": 5,
+            "data.test_query": 5,
+            "data.episodes": 10,
+            "data.cuda": CUDA_ENABLED,
+            "data.gpu": 0,
+            "model.x_dim": "28,28,1",
+            "model.z_dim": 64,
+            "train.epochs": 10,
+            'train.optim_method': "Adam",
+            "train.lr": 0.001,
+            "train.patience": 5,
+            "model.save_path": './test_omniglot.h5'
+        }
+        train(config)
+        os.remove('test_omniglot.h5')
+
     def test_5_shot_5_way(self):
         config = {
             "data.dataset": "omniglot",

@@ -123,7 +123,6 @@ def train(config):
         if state['total_episode'] % 20 == 0:
             print(f"Episode {state['total_episode']}")
         support, query = state['sample']
-
         loss_func = state['loss_func']
         train_step(loss_func, support, query)
     train_engine.hooks['on_start_episode'] = on_start_episode
@@ -132,10 +131,10 @@ def train(config):
         # Validation
         val_loader = state['val_loader']
         loss_func = state['loss_func']
-        for i_episode in range(config['data.episodes']):
+        for _ in range(config['data.episodes']):
             support, query = val_loader.get_next_episode()
+            val_step(loss_func, support, query)
 
-        val_step(loss_func, support, query)
     train_engine.hooks['on_end_episode'] = on_end_episode
 
     time_start = time.time()

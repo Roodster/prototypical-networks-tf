@@ -10,6 +10,8 @@ import cv2
 import librosa.display
 import matplotlib.pyplot as plt
 
+from prototf.utils.visualizer import visualize
+
 DIM1 = 32
 DIM2 = 128
 DIM3 = 1
@@ -35,8 +37,8 @@ class DataLoader(object):
         for i, i_class in enumerate(classes_ep):
             selected = np.random.permutation(
                 n_examples)[:self.n_support + self.n_query]
-            support[i] = self.data[selected[:self.n_support]]
-            query[i] = self.data[selected[self.n_support:]]
+            support[i] = self.data[i_class, selected[:self.n_support]]
+            query[i] = self.data[i_class, selected[self.n_support:]]
 
         return support, query
 
@@ -51,13 +53,12 @@ def class_names_to_paths(data_dir, class_names):
     """
     d = []
     for class_name in class_names:
-        soundclass, sound = class_name.split('/')
-        image_dir = os.path.join(data_dir, 'data', soundclass, sound)
+        image_dir = os.path.join(data_dir, 'data', class_name)
         d.append(image_dir)
     return d
 
 
-def get_class_images_paths(dir_paths):
+def get_spectogram_paths(dir_paths):
     """
     Return class names, paths to the corresponding images and rotations from
     the path of the classes' directories.
@@ -66,22 +67,26 @@ def get_class_images_paths(dir_paths):
     Returns (list): list of class names
     """
     classes = []
-    for dir_path in dir_paths:
-        classes.append(dir_path)
+    for folder in dir_paths:
+        files = []
+        for file in os.listdir(folder):
+            files.append(os.path.join(folder, file))
+        classes.append(files)
 
     return classes
 
 
-def load_and_preprocess_spectrogram(img_path):
+def load_and_preprocess_spectrogram(file):
     """
     Load and return preprocessed image.
     Args:
         img_path (str): path to the image on disk.
     Returns (Tensor): preprocessed image
     """
-    img = np.load(img_path)
+
+    img = np.load(file)
     img = np.asarray(img)
-    # img = 1 - img
+    img = 1 - img
     return np.expand_dims(img, -1)
 
 
@@ -154,28 +159,34 @@ def load_esc_50(data_dir, config, splits):
             n_query = config['data.train_query']
 
         # Get all class names
-        class_names = []
+        class_names = set()
         with open(os.path.join(split_dir, f"{split}.txt"), 'r') as f:
             for class_name in f.readlines():
-                class_names.append(class_name.rstrip('\n'))
+                class_names.add(class_name.split('/')[0])
 
-        # Get class names, images paths and rotation angles per each class
+        # Get paths to all classes
         class_paths = class_names_to_paths(data_dir,
                                            class_names)
-        classes = get_class_images_paths(
+
+        # Get paths to spectogram files
+        spectogram_files = get_spectogram_paths(
             class_paths)
 
-        data = np.zeros([len(classes), DIM1, DIM2, DIM3])
+        data = np.zeros([len(class_names), len(
+            spectogram_files[0]), DIM1, DIM2, DIM3])
 
-        for i_class in range(len(classes)):
-            data[i_class, :, :, :] = load_and_preprocess_spectrogram(
-                classes[i_class])
+        for class_index, class_name in enumerate(class_names):
+            files = spectogram_files[class_index]
+            for file_index, file in enumerate(files):
+                data[class_index, file_index, :, :,
+                     :] = load_and_preprocess_spectrogram(file)
 
         data_loader = DataLoader(data,
-                                 n_classes=len(classes),
+                                 n_classes=len(class_names),
                                  n_way=n_way,
                                  n_support=n_support,
                                  n_query=n_query)
 
         ret[split] = data_loader
+
     return ret
