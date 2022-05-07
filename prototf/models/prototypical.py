@@ -68,6 +68,7 @@ class Prototypical(Model):
         n_support = support.shape[1]
         n_query = query.shape[1]
         y = np.tile(np.arange(n_class)[:, np.newaxis], (1, n_query))
+
         y_onehot = tf.cast(tf.one_hot(y, n_class), tf.float32)
 
         # correct indices of support samples (just natural order)
