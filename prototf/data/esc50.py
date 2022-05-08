@@ -12,8 +12,8 @@ import matplotlib.pyplot as plt
 
 from prototf.utils.visualizer import visualize
 
-DIM1 = 32
-DIM2 = 128
+DIM1 = 128
+DIM2 = 32
 DIM3 = 1
 
 
