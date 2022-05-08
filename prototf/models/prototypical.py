@@ -1,26 +1,8 @@
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.layers import Dense, Flatten, Conv2D
+from tensorflow.keras.layers import Flatten
 from tensorflow.keras import Model
-from tensorflow.keras.models import load_model
-
-
-def calc_euclidian_dists(x, y):
-    """
-    Calculate euclidian distance between two 3D tensors.
-
-    Args:
-        x (tf.Tensor):
-        y (tf.Tensor):
-
-    Returns (tf.Tensor): 2-dim tensor with distances.
-
-    """
-    n = x.shape[0]
-    m = y.shape[0]
-    x = tf.tile(tf.expand_dims(x, 1), [1, m, 1])
-    y = tf.tile(tf.expand_dims(y, 0), [n, 1, 1])
-    return tf.reduce_mean(tf.math.pow(x - y, 2), 2)
+from prototf.utils.distances import calc_euclidian_dists
 
 
 class Prototypical(Model):
@@ -28,39 +10,38 @@ class Prototypical(Model):
     Implemenation of Prototypical Network.
     """
 
-    def __init__(self, n_support, n_query, w, h, c):
+    def __init__(self, width, height, channels):
         """
         Args:
-            n_support (int): number of support examples.
-            n_query (int): number of query examples.
-            w (int): image width .
-            h (int): image height.
-            c (int): number of channels.
+            width (int): Spectogram width .
+            heught (int): Spectogram height.
+            channels (int): Spectogram of channels.
+            weights (str): Path to .h5 weights file.
         """
         super(Prototypical, self).__init__()
-        self.w, self.h, self.c = w, h, c
+        self.width, self.height, self.channels = width, height, channels
+
+        def conv_block():
+            """
+                Returns the convolutional block as defined in 
+                FEW-SHOT SOUND EVENT DETECTION by Wang, Y. et al.
+            Returns:
+                tf.keras.Sequential: Sequential convolutional block.
+            """
+            return tf.keras.Sequential([
+                tf.keras.layers.Conv2D(
+                    filters=64, kernel_size=3, padding='same'),
+                tf.keras.layers.BatchNormalization(),
+                tf.keras.layers.ReLU(),
+                tf.keras.layers.MaxPool2D((2, 2))])
 
         # Encoder as ResNet like CNN with 4 blocks
         self.encoder = tf.keras.Sequential([
-            tf.keras.layers.Conv2D(filters=64, kernel_size=3, padding='same'),
-            tf.keras.layers.BatchNormalization(),
-            tf.keras.layers.ReLU(),
-            tf.keras.layers.MaxPool2D((2, 2)),
-
-            tf.keras.layers.Conv2D(filters=64, kernel_size=3, padding='same'),
-            tf.keras.layers.BatchNormalization(),
-            tf.keras.layers.ReLU(),
-            tf.keras.layers.MaxPool2D((2, 2)),
-
-            tf.keras.layers.Conv2D(filters=64, kernel_size=3, padding='same'),
-            tf.keras.layers.BatchNormalization(),
-            tf.keras.layers.ReLU(),
-            tf.keras.layers.MaxPool2D((2, 2)),
-
-            tf.keras.layers.Conv2D(filters=64, kernel_size=3, padding='same'),
-            tf.keras.layers.BatchNormalization(),
-            tf.keras.layers.ReLU(),
-            tf.keras.layers.MaxPool2D((2, 2)), Flatten()]
+            conv_block(),
+            conv_block(),
+            conv_block(),
+            conv_block(),
+            Flatten()]
         )
 
     def call(self, support, query):
@@ -78,9 +59,9 @@ class Prototypical(Model):
         # merge support and query to forward through encoder
         cat = tf.concat([
             tf.reshape(support, [n_class * n_support,
-                                 self.w, self.h, self.c]),
+                                 self.width, self.height, self.channels]),
             tf.reshape(query, [n_class * n_query,
-                               self.w, self.h, self.c])], axis=0)
+                               self.width, self.height, self.channels])], axis=0)
         z = self.encoder(cat)
 
         # Divide embedding into support and query
@@ -128,5 +109,5 @@ class Prototypical(Model):
         Returns: None
 
         """
-        self.encoder(tf.zeros([1, self.w, self.h, self.c]))
+        self.encoder(tf.zeros([1, self.width, self.height, self.channels]))
         self.encoder.load_weights(model_path)

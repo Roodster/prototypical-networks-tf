@@ -38,10 +38,8 @@ def train(config):
         device_name = 'CPU:0'
 
     # Setup training operations
-    n_support = config['data.train_support']
-    n_query = config['data.train_query']
-    w, h, c = list(map(int, config['model.x_dim'].split(',')))
-    model = Prototypical(n_support, n_query, w, h, c)
+    width, height, channels = list(map(int, config['model.x_dim'].split(',')))
+    model = Prototypical(width, height, channels)
     optimizer = tf.keras.optimizers.Adam(config['train.lr'])
 
     # Metrics to gather
