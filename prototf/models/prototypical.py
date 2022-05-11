@@ -21,27 +21,27 @@ class Prototypical(Model):
         super(Prototypical, self).__init__()
         self.width, self.height, self.channels = width, height, channels
 
-        def conv_block():
-            """
-                Returns the convolutional block as defined in 
-                FEW-SHOT SOUND EVENT DETECTION by Wang, Y. et al.
-            Returns:
-                tf.keras.Sequential: Sequential convolutional block.
-            """
-            return tf.keras.Sequential([
-                tf.keras.layers.Conv2D(
-                    filters=64, kernel_size=3, padding='same'),
-                tf.keras.layers.BatchNormalization(),
-                tf.keras.layers.ReLU(),
-                tf.keras.layers.MaxPool2D((2, 2))])
-
         # Encoder as ResNet like CNN with 4 blocks
         self.encoder = tf.keras.Sequential([
-            conv_block(),
-            conv_block(),
-            conv_block(),
-            conv_block(),
-            Flatten()]
+            tf.keras.layers.Conv2D(filters=64, kernel_size=3, padding='same'),
+            tf.keras.layers.BatchNormalization(),
+            tf.keras.layers.ReLU(),
+            tf.keras.layers.MaxPool2D((2, 2)),
+
+            tf.keras.layers.Conv2D(filters=64, kernel_size=3, padding='same'),
+            tf.keras.layers.BatchNormalization(),
+            tf.keras.layers.ReLU(),
+            tf.keras.layers.MaxPool2D((2, 2)),
+
+            tf.keras.layers.Conv2D(filters=64, kernel_size=3, padding='same'),
+            tf.keras.layers.BatchNormalization(),
+            tf.keras.layers.ReLU(),
+            tf.keras.layers.MaxPool2D((2, 2)),
+
+            tf.keras.layers.Conv2D(filters=64, kernel_size=3, padding='same'),
+            tf.keras.layers.BatchNormalization(),
+            tf.keras.layers.ReLU(),
+            tf.keras.layers.MaxPool2D((2, 2)), Flatten()]
         )
 
     def call(self, support, query):
