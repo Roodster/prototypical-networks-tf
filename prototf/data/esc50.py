@@ -1,16 +1,6 @@
 import os
 import numpy as np
-import pickle
-from PIL import Image
-from functools import partial
 import tensorflow as tf
-import glob
-import sys
-import cv2
-import librosa.display
-import matplotlib.pyplot as plt
-
-from prototf.utils.visualizer import visualize
 
 DIM1 = 128
 DIM2 = 32

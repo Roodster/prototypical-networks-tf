@@ -2,7 +2,6 @@ import os
 import numpy as np
 import pickle
 from PIL import Image
-from functools import partial
 import tensorflow as tf
 
 
