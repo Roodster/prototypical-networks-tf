@@ -3,7 +3,7 @@ import numpy as np
 import tensorflow as tf
 
 DIM1 = 128
-DIM2 = 32
+DIM2 = 320
 DIM3 = 1
 
 
